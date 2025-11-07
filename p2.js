@@ -28,6 +28,21 @@ let rot = 0;
 let axisRotation = null;
 let rot_inc = 10;
 
+// store WebGL state for each canvas
+const gl_contexts = {
+    xz: null,
+    yz: null,
+    xy: null,
+    xyz: null
+};
+
+// geometery arrays
+let axisVertices = [];
+let planeVertices = [];
+let propVertices = [];
+
+const PLANE_SCALE = 1.75;
+
 function startRotation(rotationFunc) {
     if (axisRotation !== null) clearInterval(axisRotation);
     axisRotation = setInterval(rotationFunc, 100);

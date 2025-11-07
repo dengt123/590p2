@@ -61,13 +61,13 @@
 
   <script id="vertex-shader" type="x-shader/x-vertex">
 
-    // Complete the GLSL program
-    attribute vec3 vertex;
+    // changed from vec3 to vec4
+    attribute vec4 vertex;
     uniform mat4 Model;
     uniform mat4 View;
 
     void main() {
-      gl_Position = View * Model * vertex
+      gl_Position = View * Model * vertex;
 
     }
   </script>
