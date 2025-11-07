@@ -1,0 +1,229 @@
+#container
+{
+  margin: auto;
+  padding: 1px;
+  width: 605px;
+  height: 605px;
+}
+
+.app
+{
+  margin: auto;
+  padding: 0px;
+}
+
+.title
+{
+  margin: auto;
+  padding: 10px;
+  border: 1px solid black;
+  font-weight: bold;
+  font-family: Arial, sans-serif;
+  color: black;
+  background-image: url( "https://i.ibb.co/QCM6V8C/brush-metal.jpg" );
+  background-repeat: no-repeat;
+  background-size: cover;
+  text-align: center;
+}
+
+.planes
+{
+  margin: auto;
+  display: flex;
+  height: 200px;
+  width: 605px;
+}
+
+.labels
+{
+  margin: auto;
+  display: flex;
+  height: 20px;
+  width: 605px;
+}
+
+.yaw {
+  width: 200px;
+  height: 25px;
+  font-family: Arial, sans-serif;
+  background-color: green;
+  color: white;
+  border: 1px solid black;
+  text-align: center;
+}
+
+.pitch {
+  width: 200px;
+  height: 25px;
+  font-family: Arial, sans-serif;
+  background-color: red;
+  color: white;
+  border: 1px solid black;
+  text-align: center;
+}
+
+.roll {
+  width: 200px;
+  height: 25px;
+  font-family: Arial, sans-serif;
+  background-color: blue;
+  color: white;
+  border: 1px solid black;
+  text-align: center;
+}
+
+.sim
+{
+  margin: auto;
+  display: flex;
+  height: 380px;
+  width: 605px;
+}
+
+.control
+{
+  margin: auto;
+  border: 2px solid black;
+  height: 100%;
+  width: 100%;
+  background-image: url( "https://i.ibb.co/QCM6V8C/brush-metal.jpg" );
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+#xz 
+{
+   background-image: url( "https://i.ibb.co/NZ4Cf7m/sky3.webp" );
+   background-repeat: no-repeat;
+   background-size: cover;
+   width: 200px;
+   height: 200px;
+   border: 1px solid black;
+}
+
+#yz 
+{
+  background-image: url( "https://i.ibb.co/NZ4Cf7m/sky3.webp" );
+   background-repeat: no-repeat;
+   background-size: cover;
+   width: 200px;
+   height: 200px;
+   border: 1px solid black;
+}
+
+#xy 
+{
+   background-image: url( "https://i.ibb.co/NZ4Cf7m/sky3.webp" );
+   background-repeat: no-repeat;
+   background-size: cover;
+   width: 200px;
+   height: 200px;
+   border: 1px solid black;
+}
+
+#xyz 
+{
+   background-image: url( "https://i.ibb.co/NZ4Cf7m/sky3.webp" );
+   background-repeat: no-repeat;
+   background-size: cover;
+   width: 400px;
+   height: 380px;
+   border: 1px solid black;
+}
+
+button
+{
+  width: 50px;
+  height: 20px;
+}
+
+#pitch-up
+{
+  background-image: url( "https://i.ibb.co/Jy4rJGR/red-arrow-up.png" );
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 50px;
+  height: 50px;
+  
+}
+
+#pitch-down
+{
+  background-image: url( "https://i.ibb.co/yYdqDnL/red-arrow-down.png" );
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 50px;
+  height: 50px;
+  
+}
+
+#yaw-right
+{
+  background-image: url( "https://i.ibb.co/YDmbfV8/green-arrow-right.png" );
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 50px;
+  height: 50px;
+  
+}
+
+#yaw-left
+{
+  background-image: url( "https://i.ibb.co/Jzb806b/green-arrow-left.png" );
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 50px;
+  height: 50px;
+  
+}
+
+#roll-right
+{
+  background-image: url( "https://i.ibb.co/bBXT4gF/blue-arrow-right.png" );
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 50px;
+  height: 50px;
+  
+}
+
+#roll-left
+{
+  background-image: url( "https://i.ibb.co/gDkFjZL/blue-arrow-left.png" );
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 50px;
+  height: 50px;
+  
+}
+
+#reset
+{
+  background-image: url( "https://i.ibb.co/Px6frmt/reset.png" );
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 50px;
+  height: 50px;
+  
+}
+
+ul
+{
+    margin: 10px;
+    padding: 10px 5px 0px 8px;
+    list-style-type: none;
+}
+
+li
+{
+    padding: 5px 2px 1px 0px;
+    display: inline;
+}
+
+.blank
+{
+  width: 50px;
+  height: 50px;
+  border: none;
+  opacity: 0.0;
+}

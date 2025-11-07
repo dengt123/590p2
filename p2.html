@@ -1,0 +1,85 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="p2.css" />
+    <script
+      src="https://www.cs.unm.edu/~angel/WebGL/7E/Common/initShaders.js"
+      defer
+    ></script>
+    <script
+      src="https://www.cs.unm.edu/~angel/WebGL/7E/Common/MV.js"
+      defer
+    ></script>
+    <script
+      src="models.js"
+      defer
+    ></script>
+    <script src="p2.js" defer></script>
+  </head>
+  <body>
+    <div id="container">
+      <div class="app">
+        <div class="title">Flight Simulator</div>
+        <div class="labels">
+          <span class="yaw">Yaw</span>
+          <span class="pitch">Pitch</span>
+          <span class="roll">Roll</span>
+        </div>
+        <!-- end label -->
+        <div class="planes">
+          <canvas id="xz"></canvas>
+          <canvas id="yz"></canvas>
+          <canvas id="xy"></canvas>
+        </div>
+        <!-- end mission -->
+        <div class="sim">
+          <canvas id="xyz"></canvas>
+          <div class="control">
+            <ul>
+              <li><button type="button" id="roll-left"></button></li>
+              <li><button type="button" id="pitch-up"></button></li>
+              <li><button type="button" id="roll-right"></button></li>
+            </ul>
+            <ul>
+              <li><button type="button" id="yaw-left"></button></li>
+              <li><button type="button" id="pitch-down"></button></li>
+              <li><button type="button" id="yaw-right"></button></li>
+            </ul>
+            <ul>
+              <li><button type="button" class="blank"></button></li>
+              <li><button type="button" id="reset"></button></li>
+              <li><button type="button" class="blank"></button></li>
+            </ul>
+          </div>
+          <!-- end control -->
+        </div>
+        <!-- end sim -->
+      </div>
+      <!-- end app -->
+    </div>
+    <!-- end containter -->
+  </body>
+
+  <script id="vertex-shader" type="x-shader/x-vertex">
+
+    // Complete the GLSL program
+    attribute vec3 vertex;
+    uniform mat4 Model;
+    uniform mat4 View;
+
+    void main() {
+      gl_Position = View * Model * vertex
+
+    }
+  </script>
+
+  <script id="fragment-shader" type="x-shader/x-fragment">
+
+    precision lowp float;
+
+    uniform vec4 color;
+
+    void main() {
+        gl_FragColor = color;
+    }
+  </script>
+</html>
