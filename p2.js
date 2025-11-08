@@ -156,12 +156,60 @@ function createVertexData() {
         propVertices[row++] = Vpp[F[1]];
         propVertices[row++] = Vpp[F[2]];
     }
-
-    // will need to call flatten before uploading to WebGL
 }
 
 
+function allocateMemory() {
+    // for each canvas/webgl context
+    for (let id in gl_contexts) {
+        const ctx = gl_contexts[id];
+        const webgl_context = ctx.webgl_context;
+    
+
+        // axis buffer
+        const axisBuffer = webgl_context.createBuffer();
+        webgl_context.bindBuffer(webgl_context.ARRAY_BUFFER, axisBuffer);
+        webgl_context.bufferData(webgl_context.ARRAY_BUFFER, flatten(axisVertices), webgl_context.STATIC_DRAW);
+
+        // plane buffer
+        const planeBuffer = webgl_context.createBuffer();
+        webgl_context.bindBuffer(webgl_context.ARRAY_BUFFER, planeBuffer);
+        webgl_context.bufferData(webgl_context.ARRAY_BUFFER, flatten(planeVertices), webgl_context.STATIC_DRAW);
+
+        // propeller buffer
+        const propBuffer = webgl_context.createBuffer();
+        webgl_context.bindBuffer(webgl_context.ARRAY_BUFFER, propBuffer);
+        webgl_context.bufferData(webgl_context.ARRAY_BUFFER, flatten(propVertices), webgl_context.STATIC_DRAW);
+
+        // save buffers in context objects for use in draw()
+        ctx.axisBuffer = axisBuffer;
+        ctx.planeBuffer = planeBuffer;
+        ctx.propBuffer = propBuffer;
+
+    }
+}
+
+// helper function to enable vertex attributes, will be called in draw()
+function enableVertexAttributes(webgl_context, attr_vertex) {
+    webgl_context.enableVertexAttribArray(attr_vertex);
+    webgl_context.vertexAttribPointer(attr_vertex, 3, webgl_context.FLOAT, false, 0, 0);
+}
+
+// get view matrix for each canvas
+
+
+// get model matrices for plane, propeller, and axes
+
+
+// draw helper functions to draw axes, plane, and propeller
+
+
+// main draw function
+
+
+
+
 createVertexData();
-//configure();
-//allocateMemory();
-//draw();
+configure();
+allocateMemory();
+//setInterval(draw, 100);
