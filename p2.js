@@ -198,7 +198,45 @@ function enableVertexAttributes(webgl_context, attr_vertex) {
 }
 
 // compute view matrix for each canvas
+function getViewMatrix(ctx) {
+    const canvas = ctx.canvas;
+    // slightly different aspect ratio for large canvas
+    const aspect = canvas.width / canvas.height;
+    const id = ctx.id;
 
+    let eye;
+    const at = vec3(0, 0, 0); // always look at origin
+    let up;
+
+    switch (id) {
+        case "xz":
+            // yaw view, top down (facing down)
+            // may need to adjust vectors to match look of video
+            eye = vec3(0, 5, 0);
+            up = vec3(0, 0, -1);
+            break;
+        case "yz":
+            // pitch view, front on 
+            eye = vec3(0, 0, -5);
+            up = vec3(0, 1, 0);
+            break;
+        case "xy":
+            // roll view, side on (facing right)
+            eye = vec3(-5, 0, 0);
+            up = vec3(0, 1, 0);
+            break;
+        case "xyz":
+            // main view
+            eye = vec3(0, 0, -5);
+            up = vec3(0, 1, 0);
+            break;
+    }
+
+    const V = lookAt(eye, at, up);
+    const P = perspective(45, aspect, 0.1, 100);
+    // View matrix is P * V
+    return mult(P, V);
+}
 
 // build model transformation matrices for plane, propeller, and axes
 
