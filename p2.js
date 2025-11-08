@@ -88,19 +88,42 @@ document.addEventListener('mousedown', function (event) {
 // ----------------------------------------------
 
 function configure() {
-    canvas = document.getElementById("webgl-canvas");
-    webgl_context = canvas.getContext("webgl");
-    program = initShaders(webgl_context, "vertex-shader", "fragment-shader");
-    webgl_context.useProgram(program);
+    let ids = ["xz", "yz", "xy", "xyz"];
 
-    webgl_context.viewport(0,0,canvas.width, canvas.height);
+    for (let i = 0; i < ids.length; i++) {
+        let id = ids[i];
 
-    attr_vertex = webgl_context.getAttribLocation(program, "vertex");
-    uniform_color = webgl_context.getUniformLocation(program, "color");
-    uniform_view = webgl_context.getUniformLocation(program, "View");
+        let canvas = document.getElementById(id);
+        let webgl_context = canvas.getContext("webgl");
+    
+
+        let program = initShaders(webgl_context, "vertex-shader", "fragment-shader");
+        webgl_context.useProgram(program);
+
+        webgl_context.viewport(0,0,canvas.width, canvas.height);
+
+        let attr_vertex = webgl_context.getAttribLocation(program, "vertex");
+        let uniform_color = webgl_context.getUniformLocation(program, "color");
+        let uniform_view = webgl_context.getUniformLocation(program, "View");
+        let uniform_model = webgl_context.getUniformLocation(program, "Model");
+
+        webgl_context.enable( webgl_context.DEPTH_TEST );
+
+        gl_contexts[id] = {
+            id,
+            canvas,
+            webgl_context,
+            program,
+            attr_vertex,
+            uniform_color,
+            uniform_view,
+            uniform_model
+        };
+    }
 }
 
 function createVertexData() {
+    let row;
     // axes (A); just an array of [x, y, z] points, so copy directly
     axisVertices = [];
     row = 0;
@@ -136,3 +159,9 @@ function createVertexData() {
 
     // will need to call flatten before uploading to WebGL
 }
+
+
+createVertexData();
+//configure();
+//allocateMemory();
+//draw();
