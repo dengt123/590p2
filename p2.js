@@ -87,6 +87,7 @@ document.addEventListener('mousedown', function (event) {
 // End simuation control
 // ----------------------------------------------
 
+// refactored to configure all 4 canvases
 function configure() {
     let ids = ["xz", "yz", "xy", "xyz"];
 
@@ -163,8 +164,9 @@ function allocateMemory() {
     // for each canvas/webgl context
     for (let id in gl_contexts) {
         const ctx = gl_contexts[id];
+        if (!ctx) continue;
+
         const webgl_context = ctx.webgl_context;
-    
 
         // axis buffer
         const axisBuffer = webgl_context.createBuffer();
@@ -189,19 +191,19 @@ function allocateMemory() {
     }
 }
 
-// helper function to enable vertex attributes, will be called in draw()
+// helper function to enable vertex attributes, will be called in draw() each time we bind a different buffer
 function enableVertexAttributes(webgl_context, attr_vertex) {
     webgl_context.enableVertexAttribArray(attr_vertex);
     webgl_context.vertexAttribPointer(attr_vertex, 3, webgl_context.FLOAT, false, 0, 0);
 }
 
-// get view matrix for each canvas
+// compute view matrix for each canvas
 
 
-// get model matrices for plane, propeller, and axes
+// build model transformation matrices for plane, propeller, and axes
 
 
-// draw helper functions to draw axes, plane, and propeller
+// draw helper functions for each object
 
 
 // main draw function
