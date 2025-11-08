@@ -100,3 +100,39 @@ function configure() {
     uniform_view = webgl_context.getUniformLocation(program, "View");
 }
 
+function createVertexData() {
+    // axes (A); just an array of [x, y, z] points, so copy directly
+    axisVertices = [];
+    row = 0;
+
+    for (let i = 0; i < A.length; i++) {
+        axisVertices[row++] = A[i];
+    }
+    
+    // plane (Vpl, Fpl); list of vertices (Vpl) and faces (Fpl), for each face copy the 3 vertices
+    planeVertices = [];
+    row = 0;
+
+    for (let i = 0; i < Fpl.length; i++) {
+        const F = Fpl[i];
+
+        planeVertices[row++] = Vpl[F[0]];
+        planeVertices[row++] = Vpl[F[1]];
+        planeVertices[row++] = Vpl[F[2]];
+    }
+
+
+    // propeller (Vpp, Fpp); same idea as plane
+    propVertices = [];
+    row = 0;
+
+    for (let i = 0; i < Fpp.length; i++) {
+        const F = Fpp[i];
+
+        propVertices[row++] = Vpp[F[0]];
+        propVertices[row++] = Vpp[F[1]];
+        propVertices[row++] = Vpp[F[2]];
+    }
+
+    // will need to call flatten before uploading to WebGL
+}
