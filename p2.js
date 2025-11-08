@@ -212,22 +212,22 @@ function getViewMatrix(ctx) {
         case "xz":
             // yaw view, top down (facing down)
             // may need to adjust vectors to match look of video
-            eye = vec3(0, 5, 0);
-            up = vec3(0, 0, -1);
+            eye = vec3(0, 2, 0);
+            up = vec3(0, 0, 1);
             break;
         case "yz":
             // pitch view, front on 
-            eye = vec3(0, 0, -5);
+            eye = vec3(0, 0, -2);
             up = vec3(0, 1, 0);
             break;
         case "xy":
             // roll view, side on (facing right)
-            eye = vec3(-5, 0, 0);
+            eye = vec3(2, 0, 0);
             up = vec3(0, 1, 0);
             break;
         case "xyz":
             // main view
-            eye = vec3(0, 0, -5);
+            eye = vec3(0, 0, -2);
             up = vec3(0, 1, 0);
             break;
     }
@@ -249,7 +249,7 @@ function getPlaneModel(ctx) {
     switch (id) {
         case "xz":
             // yaw only (about y axis)
-            M = mult(M, rotate(yang, [0, 1, 0]));
+            M = mult(M, rotate(-yang, [0, 1, 0]));
             break;
         case "yz":
             // pitch only (about x axis)
@@ -257,13 +257,13 @@ function getPlaneModel(ctx) {
             break;
         case "xy":
             // roll only (about z axis)
-            M = mult(M, rotate(zang, [0, 0, 1]));
+            M = mult(M, rotate(-zang, [0, 0, 1]));
             break;
         case "xyz":
             // combined rotations: yaw (y), pitch (x), roll (z)
-            M = mult(M, rotate(yang, [0, 1, 0]));
+            M = mult(M, rotate(-yang, [0, 1, 0]));
             M = mult(M, rotate(xang, [1, 0, 0]));
-            M = mult(M, rotate(zang, [0, 0, 1]));
+            M = mult(M, rotate(-zang, [0, 0, 1]));
             break;
     }
 
@@ -273,8 +273,7 @@ function getPlaneModel(ctx) {
 function getPropModel(ctx) {
     let M = getPlaneModel(ctx);
     // translate to propeller position
-    // .75 is a guess for now, may need adjusting
-    M = mult(M, translate(0.0, 0.0, 0.75));
+    M = mult(M, translate(0.0, 0.0, -0.36));
 
     // spin around z axis
     M = mult(M, rotate(rot, [0, 0, 1]));
@@ -288,7 +287,7 @@ function getAxisModel(ctx) {
     switch (id) {
         case "xz":
             // yaw only (about y axis)
-            M = mult(M, rotate(yang, [0, 1, 0]));
+            M = mult(M, rotate(-yang, [0, 1, 0]));
             break;
         case "yz":
             // pitch only (about x axis)
@@ -296,22 +295,101 @@ function getAxisModel(ctx) {
             break;
         case "xy":
             // roll only (about z axis)
-            M = mult(M, rotate(zang, [0, 0, 1]));
+            M = mult(M, rotate(-zang, [0, 0, 1]));
             break;
         case "xyz":
             // combined rotations: yaw (y), pitch (x), roll (z)
-            M = mult(M, rotate(yang, [0, 1, 0]));
+            M = mult(M, rotate(-yang, [0, 1, 0]));
             M = mult(M, rotate(xang, [1, 0, 0]));
-            M = mult(M, rotate(zang, [0, 0, 1]));
+            M = mult(M, rotate(-zang, [0, 0, 1]));
             break;
     }
     return M;
 }
 
 // draw helper functions for each object
+function drawAxes(ctx, View) {
+    const webgl_context = ctx.webgl_context;
+
+    // use axis buffer & enable attributes
+    webgl_context.bindBuffer(webgl_context.ARRAY_BUFFER, ctx.axisBuffer);
+    enableVertexAttributes(webgl_context, ctx.attr_vertex);
+
+    const Model = getAxisModel(ctx);
+
+    // set uniforms
+    webgl_context.uniformMatrix4fv(ctx.uniform_view, false, flatten(View));
+    webgl_context.uniformMatrix4fv(ctx.uniform_model, false, flatten(Model));
+
+    // x-axis in red, vertices 0-1
+    webgl_context.uniform4fv(ctx.uniform_color, [1.0, 0.0, 0.0, 1.0]);
+    webgl_context.drawArrays(webgl_context.LINES, 0, 2);
+
+    // y-axis in green, vertices 2-3
+    webgl_context.uniform4fv(ctx.uniform_color, [0.0, 1.0, 0.0, 1.0]);
+    webgl_context.drawArrays(webgl_context.LINES, 2, 2);
+
+    // z-axis in blue, vertices 4-5
+    webgl_context.uniform4fv(ctx.uniform_color, [0.0, 0.0, 1.0, 1.0]);
+    webgl_context.drawArrays(webgl_context.LINES, 4, 2);
+}
+
+function drawPlane(ctx, View) {
+    const webgl_context = ctx.webgl_context;
+
+    // use plane buffer & enable attributes
+    webgl_context.bindBuffer(webgl_context.ARRAY_BUFFER, ctx.planeBuffer);
+    enableVertexAttributes(webgl_context, ctx.attr_vertex);
+
+    const Model = getPlaneModel(ctx);
+
+    // set uniforms
+    webgl_context.uniformMatrix4fv(ctx.uniform_view, false, flatten(View));
+    webgl_context.uniformMatrix4fv(ctx.uniform_model, false, flatten(Model));
+
+    // plane in gray
+    webgl_context.uniform4fv(ctx.uniform_color, [0.5, 0.5, 0.5, 1.0]);
+    webgl_context.drawArrays(webgl_context.TRIANGLES, 0, planeVertices.length);
+}
+
+function drawProp(ctx,  View) {
+    const webgl_context = ctx.webgl_context;
+
+    // use propeller buffer & enable attributes
+    webgl_context.bindBuffer(webgl_context.ARRAY_BUFFER, ctx.propBuffer);
+    enableVertexAttributes(webgl_context, ctx.attr_vertex);
+
+    const Model = getPropModel(ctx);
+
+    // set uniforms
+    webgl_context.uniformMatrix4fv(ctx.uniform_view, false, flatten(View));
+    webgl_context.uniformMatrix4fv(ctx.uniform_model, false, flatten(Model));
+
+    // propeller in slightly darker gray
+    webgl_context.uniform4fv(ctx.uniform_color, [0.3, 0.3, 0.3, 1.0]);
+    webgl_context.drawArrays(webgl_context.TRIANGLES, 0, propVertices.length);
+}
 
 
-// main draw function
+function draw() {
+    // spin propeller
+    rot = (rot - rot_inc) % 360;
+
+    for (const id in gl_contexts) {
+        const ctx = gl_contexts[id];
+        if (!ctx) continue;
+
+        const webgl_context = ctx.webgl_context;
+
+        const View = getViewMatrix(ctx);
+
+
+        drawAxes(ctx, View);
+        drawPlane(ctx, View);
+        drawProp(ctx, View);
+    }
+
+}
 
 
 
@@ -319,4 +397,4 @@ function getAxisModel(ctx) {
 createVertexData();
 configure();
 allocateMemory();
-//setInterval(draw, 100);
+setInterval(draw, 100);
