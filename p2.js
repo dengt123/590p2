@@ -239,7 +239,74 @@ function getViewMatrix(ctx) {
 }
 
 // build model transformation matrices for plane, propeller, and axes
+function getPlaneModel(ctx) {
+    const id = ctx.id;
+    let M = mat4();
 
+    // unform scale for plane
+    M = mult(M, scalem(PLANE_SCALE, PLANE_SCALE, PLANE_SCALE));
+
+    switch (id) {
+        case "xz":
+            // yaw only (about y axis)
+            M = mult(M, rotate(yang, [0, 1, 0]));
+            break;
+        case "yz":
+            // pitch only (about x axis)
+            M = mult(M, rotate(xang, [1, 0, 0]));
+            break;
+        case "xy":
+            // roll only (about z axis)
+            M = mult(M, rotate(zang, [0, 0, 1]));
+            break;
+        case "xyz":
+            // combined rotations: yaw (y), pitch (x), roll (z)
+            M = mult(M, rotate(yang, [0, 1, 0]));
+            M = mult(M, rotate(xang, [1, 0, 0]));
+            M = mult(M, rotate(zang, [0, 0, 1]));
+            break;
+    }
+
+    return M;
+}
+
+function getPropModel(ctx) {
+    let M = getPlaneModel(ctx);
+    // translate to propeller position
+    // .75 is a guess for now, may need adjusting
+    M = mult(M, translate(0.0, 0.0, 0.75));
+
+    // spin around z axis
+    M = mult(M, rotate(rot, [0, 0, 1]));
+    return M;
+}
+
+function getAxisModel(ctx) {
+    const id = ctx.id;
+    let M = mat4();
+    // rotate to match plane orientation
+    switch (id) {
+        case "xz":
+            // yaw only (about y axis)
+            M = mult(M, rotate(yang, [0, 1, 0]));
+            break;
+        case "yz":
+            // pitch only (about x axis)
+            M = mult(M, rotate(xang, [1, 0, 0]));
+            break;
+        case "xy":
+            // roll only (about z axis)
+            M = mult(M, rotate(zang, [0, 0, 1]));
+            break;
+        case "xyz":
+            // combined rotations: yaw (y), pitch (x), roll (z)
+            M = mult(M, rotate(yang, [0, 1, 0]));
+            M = mult(M, rotate(xang, [1, 0, 0]));
+            M = mult(M, rotate(zang, [0, 0, 1]));
+            break;
+    }
+    return M;
+}
 
 // draw helper functions for each object
 
